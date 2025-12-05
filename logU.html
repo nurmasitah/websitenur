@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Admin - Modern Living Hub</title>
+    <style>
+        /* Variabel Warna dari Brand Situs Desain Rumah Anda */
+        :root {
+            --color-primary: #1f3a46; /* Biru/Abu-abu Gelap (Brand) */
+            --color-secondary: #6f7577; /* Abu-abu Sedang */
+            --color-background: #eef1f5; /* Background yang lembut */
+            --color-white: #ffffff;
+            --color-success: #155724;
+            --color-error: #721c24;
+        }
+
+        /* Gaya Dasar dan Tipografi Profesional */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--color-background);
+        }
+
+        /* Container Card Utama (Modern dan Berfokus) */
+        .auth-card {
+            width: 90%;
+            max-width: 450px;
+            background-color: var(--color-white);
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        /* Header Visual yang Menarik */
+        .auth-header {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .auth-header h2 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        .auth-header p {
+            margin-top: 5px;
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        /* Area Formulir */
+        .auth-form-area {
+            padding: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        /* Input Fields yang Bersih */
+        input[type="text"], input[type="email"], input[type="tel"], input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #c9d2db;
+            border-radius: 6px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+            font-size: 16px;
+        }
+        input:focus {
+            border-color: var(--color-secondary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(111, 117, 119, 0.2);
+        }
+
+        /* Tombol Aksi Utama */
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 17px;
+            font-weight: 700;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+        .btn-submit:hover {
+            background-color: #0d1e26;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-card">
+        <div class="auth-header">
+            <h2>Masuk Administrator</h2>
+            <p>Masukkan kredensial admin Anda untuk melanjutkan.</p>
+        </div>
+
+        <div class="auth-form-area">
+            
+            <!-- Formulir hanya untuk Admin -->
+            <form id="login-form" action="#" method="POST"> 
+                <div class="form-group">
+                    <label for="fullname">Nama Lengkap</label>
+                    <input type="text" id="fullname" name="fullname" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Admin</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <button type="submit" class="btn-submit">Login Admin</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

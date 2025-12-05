@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desain Rumah Modern - Inspirasi Rumah Impian Anda</title>
+    <link rel="stylesheet" href="style.css">
+
+    modal + layout CSS
+    <style>
+    /* Modal dasar - diperbarui supaya fit di layar dan body modal bisa discroll */
+    .modal{
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0,0,0,0.55);
+        z-index: 9999;
+        padding: 32px 20px;
+    }
+    /* Tambahan: gaya tombol login */
+    .nav .nav-login-btn{
+        display:inline-block;
+        padding:8px 12px;
+        border-radius:8px;
+        background:linear-gradient(90deg,#f39c12,#e67e22);
+        color:#fff;
+        text-decoration:none;
+        font-weight:700;
+        border: none;
+        box-shadow:0 6px 18px rgba(243,156,18,0.18);
+    }
+    .hero .hero-login{
+        margin-top:14px;
+        padding:12px 18px;
+        background:rgba(255,255,255,0.95);
+        color:#2c3e50;
+        border-radius:50px;
+        font-weight:700;
+        cursor:pointer;
+        border:none;
+        box-shadow:0 6px 18px rgba(0,0,0,0.12);
+    }
+    .hero .hero-login:hover{ transform:translateY(-3px); }
+    /* --- layout gambar/teks yang konsisten --- */
+    :root{ --image-h: 340px; --gap:12px; }
+
+    .modal-body{
+        display: grid;
+        grid-template-columns: 32% 56% 12%;
+        gap: var(--gap);
+        padding:18px;
+        align-items:start;
+        overflow: auto;
+        flex: 1 1 auto;
+    }
+
+    /* kiri = kotak teks, ukurannya sama tinggi dengan area gambar */
+    .modal-left{
+        background:#858585;
+        color:#fff;
+        padding:18px;
+        border-radius:6px;
+        min-height: var(--image-h);
+        box-sizing: border-box;
+    }
+
+    /* center + right dibungkus untuk kontrol posisi thumbnail */
+    .modal-images{
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr 240px; /* center | right overlay area */
+        gap: var(--gap);
+        align-items: start;
+        width: 100%;
+        height: auto;
+    }
+
+    .modal-center{
+        align-self: start;
+    }
+    .modal-center img{
+        width:100%;
+        height: var(--image-h);
+        object-fit:cover;
+        border-radius:6px;
+        box-shadow:0 6px 18px rgba(0,0,0,0.12);
+        display:block;
+    }
+
+    .modal-right{
+        align-self: start;
+        position: relative;
+        display:flex;
+        align-items:flex-start;
+        justify-content:flex-end;
+    }
+
+    /* side image diposisikan supaya tampak 'menumpuk' terhadap main image */
+    .modal-right .side-img{
+        width:120%;
+        max-width:360px;
+        height: calc(var(--image-h) - 40px);
+        object-fit:cover;
+        border-radius:6px;
+        box-shadow:0 6px 18px rgba(0,0,0,0.14);
+        transform: translateX(20px) translateY(20px);
+    }
+
+    /* thumbnails: rata tengah di bawah kolom gambar utama (indent sesuai kolom kiri) */
+    .modal-thumbs{
+        display:flex;
+        gap:12px;
+        padding:0 18px 18px 18px;
+        overflow-x:auto;
+        flex: 0 0 auto;
+        margin-left: calc(32% + var(--gap)); /* sejajar dengan kolom center */
+    }
+    .modal-thumbs img{
+        width:140px;
+        height:95px;
+        object-fit:cover;
+        border-radius:6px;
+        cursor:pointer;
+        border:2px solid transparent;
+        flex: 0 0 auto;
+    }
+    .modal-thumbs img:hover{ border-color:#1f3a46; }
+
+    /* tombol tutup */
+    .modal-footer{
+        display:flex;
+        justify-content:flex-end;
+        padding:0 18px 18px 18px;
+        flex: 0 0 auto;
+    }
+    .modal-close{
+        background:#1f3a46;
+        color:#fff;
+        border:none;
+        padding:8px 12px;
+        border-radius:6px;
+        cursor:pointer;
+    }
+
+    /* responsive */
+    @media (max-width:900px){
+        :root{ --image-h: 260px; }
+        .modal-body{ grid-template-columns: 1fr; }
+        .modal-images{ grid-template-columns: 1fr; }
+        .modal-right .side-img{ width:100%; transform: translateX(0) translateY(0); height:160px; }
+        .modal-thumbs{ margin-left: 18px; }
+        .modal-thumbs img{ width:100px; height:70px; }
+        .modal-header{ padding:12px 24px; }
+    }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+<nav>
+    <div class="logo"><img src="img/logo.png" alt="Logo"></div>
+
+    <button class="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+    </button>
+
+    <ul class="nav-links" data-visible="false">
+        <li><a href="#beranda">Beranda</a></li>
+        <li><a href="#galeri">Galeri</a></li>
+        <li><a href="#tentangkami">Tentang Kami</a></li>
+        <li><a href="#ide">Ide Desain</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="logU.html" class="nav-login-btn">Login</a></li>
+    </ul>
+
+</nav>
+<script>
+    const nav = document.querySelector('.nav-links');
+    const toggle = document.querySelector('.menu-toggle');
+
+    toggle.addEventListener('click', () => {
+        const isVisible = nav.getAttribute('data-visible') === 'true';
+        nav.setAttribute('data-visible', !isVisible);
+        toggle.setAttribute('aria-expanded', !isVisible);
+    });
+
+    // Close menu when clicking outside or on a link
+    document.addEventListener('click', (e) => {
+        if (!nav.contains(e.target) && !toggle.contains(e.target)) {
+            nav.setAttribute('data-visible', 'false');
+            toggle.setAttribute('aria-expanded', 'false');
+        }
+    });
+
+    // Close menu when a link is clicked
+    nav.addEventListener('click', (e) => {
+        if (e.target.tagName === 'A') {
+            nav.setAttribute('data-visible', 'false');
+            toggle.setAttribute('aria-expanded', 'false');
+        }
+    });
+</script>
+
+<!-- HERO -->
+<div class="hero" id="beranda">
+    <div class="hero-content">
+        <div class="hero-text">
+            <h1>"Mewujudkan Rumah Impian Anda Dimulai di Sini"</h1>
+            <p>"Layanan desain arsitektur dan interior profesional untuk hunian yang nyaman, indah, dan sesuai kebutuhan Anda."</p>
+        </div>
+        <div class="hero-gallery">
+            <img src="img/home1.jpg" alt="Ruang Tamu" class="hero-img-main">
+            <img src="img/h2.jpg" alt="Kamar Tidur" class="hero-img-top">
+            <img src="img/h3.jpg" alt="Ruang Lain" class="hero-img-mid">
+        </div>
+    </div>
+</div>
+
+<!-- GALERI -->
+<div class="section" id="galeri">
+    <h2>Galeri Desain</h2>
+    <p>Koleksi foto desain rumah modern, minimalis, industrial, dan mewah.</p>
+    <div class="galeri-grid">
+        <!-- 12 gambar galeri -->
+        <img src="img/G1.jpg" alt="Desain Rumah 1">
+        <img src="img/G5.jpg" alt="Desain Rumah 2">
+        <img src="img/G9.jpg" alt="Desain Rumah 3">
+        <img src="img/G2.jpg" alt="Desain Rumah 4">
+        <img src="img/G12.jpg" alt="Desain Rumah 5">
+        <img src="img/G3.jpg" alt="Desain Rumah 6">
+        <img src="img/G6.jpg" alt="Desain Rumah 7">
+        <img src="img/G4.jpg" alt="Desain Rumah 8">
+        <img src="img/G8.jpg" alt="Desain Rumah 9">
+        <img src="img/G7.jpg" alt="Desain Rumah 10">
+        <img src="img/G10.jpg" alt="Desain Rumah 11">
+        <img src="img/G11.jpg" alt="Desain Rumah 12">
+    </div>
+</div>
+
+<!-- TENTANG KAMI -->
+<div class="section" id="tentangkami">
+    <h2>Tentang Kami</h2>
+    
+    <div class="about-wrapper">
+        <div class="about-left">
+            <h3 class="about-subtitle">Property Description</h3>
+            
+            <div class="about-item">
+                <h4>Deskripsi</h4>
+                <p>Modern Living Hub adalah platform desain rumah yang hadir untuk menginspirasi dan membantu Anda mewujudkan hunian impian. Kami menawarkan berbagai referensi desain modern hingga solusi interior yang fungsional dan estetis. Dengan pendekatan yang profesional dan berorientasi pada kenyamanan, Modern Living Hub menghadirkan pengalaman merancang rumah yang lebih mudah, terjangkau, dan sesuai kebutuhan. Temukan ide, panduan, dan layanan terbaik semua dalam satu tempat.</p>
+            </div>
+            
+            <div class="about-item">
+                <h4>Tujuan</h4>
+                <p>Memberikan bimbingan profesional kepada klien dalam merencanakan dan mengembangkan desain rumah yang sesuai kebutuhan, estetika, dan anggaran.</p>
+            </div>
+        </div>
+        
+        <div class="about-right">
+            <div class="about-gallery">
+                <img src="img/T2.jpg" alt="Modern Living 1" class="about-img-1">
+                <img src="img/T4.jpg" alt="Modern Living 2" class="about-img-2">
+                <img src="img/T1.jpg" alt="Modern Living 3" class="about-img-3">
+                <img src="img/T3.jpg" alt="Modern Living 4" class="about-img-4">
+                <img src="img/T5.jpg" alt="Modern Living 5" class="about-img-5">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- IDE DESAIN -->
+<div class="section" id="ide">
+    <h2>Ide Desain Rumah</h2>
+    <p>Koleksi desain rumah inovatif dengan berbagai konsep dan gaya untuk menginspirasi hunian impian Anda.</p>
+    <div class="ide-container">
+
+        <!-- KARTU IDE DESAIN 1 -->
+        <div class="ide-card">
+            <div class="ide-card-image">
+                <img src="img/I1.png" alt="Eco-Friendly Modern Living">
+            </div>
+            <div class="ide-card-content">
+                <h3>Eco-Friendly Modern Living</h3>
+                <p>Desain yang menekankkan keberlanjutan dengan penggunaan bahan alami dan pencahayaan alami optimal.</p>
+                <div class="ide-card-footer">
+                    <!-- diubah jadi tombol buka modal -->
+                   <a href="desain1.html" class="btn-view-interior">View Interior</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- KARTU IDE DESAIN 2 -->
+        <div class="ide-card">
+            <div class="ide-card-image">
+                <img src="img/I2.jpeg" alt="Modern Earthy Retreat">
+            </div>
+            <div class="ide-card-content">
+                <h3>Modern Earthy Retreat</h3>
+                <p>Konsep desain yang menggabungkan gaya kontemporer dengan nuansa alami dan menenangkan.</p>
+                <div class="ide-card-footer">
+                   <a href="desain2.html" class="btn-view-interior">View Interior</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- KARTU IDE DESAIN 3 -->
+        <div class="ide-card">
+            <div class="ide-card-image">
+                <img src="img/I3.jpeg" alt="Contemporary Tropical">
+            </div>
+            <div class="ide-card-content">
+                <h3>Contemporary Tropical</h3>
+                <p>Memadukan gaya kontemporer dengan elemen tropis melintasi penggunaan material alami terpilih.</p>
+                <div class="ide-card-footer">
+                    <a href="desain3.html" class="btn-view-interior">View Interior</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- KARTU IDE DESAIN 4 -->
+        <div class="ide-card">
+            <div class="ide-card-image">
+                <img src="img/I4.png" alt="Natural Harmony">
+            </div>
+            <div class="ide-card-content">
+                <h3>Natural Harmony</h3>
+                <p>Fokus pada integrasi bahan alami dan bentuk minimalis untuk menciptakan suasana yang hangat dan menenangkan.</p>
+                <div class="ide-card-footer">
+                    <a href="desain4.html" class="btn-view-interior">View Interior</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- KARTU IDE DESAIN 5 -->
+        <div class="ide-card">
+            <div class="ide-card-image">
+                <img src="img/I5.png" alt="Minimalist Warmth">
+            </div>
+            <div class="ide-card-content">
+                <h3>Minimalist Warmth</h3>
+                <p>Desain minimalis, menampilkan kehangatan melalui penggunaan material alami dan tata ruang fungsional.</p>
+                <div class="ide-card-footer">
+                    <a href="desain5.html" class="btn-view-interior">View Interior</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- MODAL DETAIL DESAIN (baru) -->
+<div id="modal" class="modal" onclick="if(event.target === this) closeModal()">
+    <div class="modal-wrap" role="dialog" aria-modal="true">
+        <div class="modal-header">
+            <button class="modal-back" onclick="closeModal()">←</button>
+            <div id="modalTitle">Judul Desain</div>
+        </div>
+
+        <div class="modal-body">
+            <div class="modal-left">
+                <h3 id="modalSubtitle">Subjudul</h3>
+                <p id="modalDescription">Deskripsi panjang desain, materi, konsep, dan catatan penting akan tampil di sini. Diatur supaya mudah dibaca dan memberi konteks pada gambar.</p>
+            </div>
+
+            <div class="modal-images">
+                <div class="modal-center">
+                    <img id="modalMainImage" src="" alt="Main view">
+                </div>
+
+                <div class="modal-right">
+                    <img id="modalSideImage" class="side-img" src="" alt="Side view">
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-thumbs" id="modalThumbs" aria-label="Thumbnail images"></div>
+
+        <div class="modal-footer">
+            <button class="modal-close" onclick="closeModal()">Tutup</button>
+        </div>
+    </div>
+</div>
+
+<!-- CONTACT -->
+<div class="section" id="contact">
+    <h2>Hubungi Kami</h2>
+    <p>Punya pertanyaan atau ingin berkonsultasi tentang desain rumah impian Anda? Hubungi kami melalui form berikut.</p>
+    <div class="contact-container">
+        <div class="contact-form">
+            <form onsubmit="handleSubmit(event)">
+                <div class="form-group">
+                    <label for="nama">Nama Lengkap</label>
+                    <input type="text" id="nama" name="nama" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="telepon">Nomor Telepon</label>
+                    <input type="tel" id="telepon" name="telepon" required>
+                </div>
+                <div class="form-group">
+                    <label for="pesan">Pesan</label>
+                    <textarea id="pesan" name="pesan" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Kirim Pesan</button>
+            </form>
+</form>
+
+        </div>
+        <div class="contact-info">
+            <h3>Informasi Kontak</h3>
+            <div class="info-item">
+                <h4>📍 Alamat</h4>
+                <p>Jl. Raya Ende-Bajawa Km 21, Desa Anaraja, Kecamatan Nangapanda, Kabupaten Ende, Nusa Tenggara Timur,</p>
+            </div>
+            <div class="info-item">
+                <h4>📞 Telepon</h4>
+                <p>+62 51-3440-3329</p>
+            </div>
+            <div class="info-item">
+                <h4>✉️ Email</h4>
+                <p>nurmasitah980@gmail.com</p>
+            </div>
+        </div>
+    </div>
+</div>
+    <center>&copy; 2025 Desain Rumah | Semua Hak Dilindungi</center>
+</footer>
+
+<script>
+/* data desain — ganti src dengan file lokal Anda bila perlu */
+const DESAIN_DATA = {
+    desain1:{
+        title:"Eco-Friendly Modern Living",
+        subtitle:"Sustainable · Modern",
+        desc:"Desain yang menekankan keberlanjutan dengan penggunaan bahan alami dan pencahayaan alami optimal. Integrasi elemen ramah lingkungan untuk hunian yang efisien dan estetis.",
+        main:"I1.png",
+        side:"G1.jpg",
+        thumbs:["G1.jpg","G5.jpg","G9.jpg","G2.jpg"]
+    },
+    desain2:{
+        title:"Modern Earthy Retreat",
+        subtitle:"Warm · Natural",
+        desc:"Konsep yang menggabungkan gaya kontemporer dengan nuansa alami dan menenangkan, menggunakan palet warna hangat dan material alami.",
+        main:"I2.jpeg",
+        side:"G5.jpg",
+        thumbs:["G5.jpg","G2.jpg","G12.jpg","G3.jpg"]
+    },
+    desain3:{
+        title:"Contemporary Tropical",
+        subtitle:"Fresh · Organic",
+        desc:"Memadukan gaya kontemporer dengan elemen tropis melalui penggunaan material alami, kayu, dan tanaman indoor.",
+        main:"I3.jpeg",
+        side:"G9.jpg",
+        thumbs:["G9.jpg","G6.jpg","G4.jpg","G8.jpg"]
+    },
+    desain4:{
+        title:"Natural Harmony",
+        subtitle:"Minimal · Calm",
+        desc:"Fokus pada integrasi bahan alami dan bentuk minimalis untuk menciptakan suasana hangat dan menenangkan.",
+        main:"I4.png",
+        side:"G4.jpg",
+        thumbs:["G4.jpg","G7.jpg","G10.jpg","G11.jpg"]
+    },
+    desain5:{
+        title:"Minimalist Warmth",
+        subtitle:"Simple · Functional",
+        desc:"Desain minimalis yang menampilkan kehangatan melalui penggunaan material alami dan tata ruang fungsional.",
+        main:"I5.png",
+        side:"G2.jpg",
+        thumbs:["G2.jpg","G3.jpg","G5.jpg","G1.jpg"]
+    }
+};
+
+function openModal(key){
+    const data = DESAIN_DATA[key];
+    if(!data) return;
+    document.getElementById("modalTitle").textContent = data.title;
+    document.getElementById("modalSubtitle").textContent = data.subtitle;
+    document.getElementById("modalDescription").textContent = data.desc;
+    document.getElementById("modalMainImage").src = data.main;
+    document.getElementById("modalSideImage").src = data.side;
+
+    const thumbs = document.getElementById("modalThumbs");
+    thumbs.innerHTML = "";
+    data.thumbs.forEach((src, idx) => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = data.title + " thumb " + (idx+1);
+        img.onclick = () => document.getElementById("modalMainImage").src = src;
+        thumbs.appendChild(img);
+    });
+
+    document.getElementById("modal").style.display = "flex";
+    // fokus aksesibilitas sederhana
+    document.querySelector('.modal-wrap').focus();
+}
+
+// tutup modal
+function closeModal(){
+    document.getElementById("modal").style.display = "none";
+}
+
+// ESC untuk tutup
+document.addEventListener('keydown', (e) => {
+    if(e.key === "Escape") closeModal();
+});
+
+// handle contact form tetap utuh (jika ada)
+function handleSubmit(event){
+    event.preventDefault();
+    const nama = document.getElementById("nama").value;
+    const telepon = document.getElementById("telepon").value;
+    alert(`Terima kasih ${nama}! Pesan Anda telah kami terima. Tim kami akan segera menghubungi Anda di ${telepon}.`);
+    document.querySelector('form').reset();
+}
+</script>
+</body>
+</html>

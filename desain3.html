@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Minimalist Warmth — Compact View</title>
+  <style>
+    :root{
+      --bg:#f6f7f8;
+      --card:#ffffff;
+      --muted:#6d777d;
+      --accent:#f39c12;
+      --max-width:720px;   /* lebih kecil */
+      --gap:12px;
+      --radius:10px;
+      --shadow: 0 8px 22px rgba(12,20,28,0.06);
+      --text-size:14px;
+      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:#132027;
+      display:flex;
+      justify-content:center;
+      padding:12px;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+      font-size:var(--text-size);
+    }
+
+    /* container lebih kecil & centered */
+    .wrap{
+      width:100%;
+      max-width:var(--max-width);
+    }
+
+    /* tipis topbar */
+    .topbar{
+      background:#9a9a9a;
+      color:#082a2f;
+      padding:6px 10px;
+      border-radius:8px;
+      text-align:center;
+      font-weight:600;
+      font-size:13px;
+      margin-bottom:10px;
+      box-shadow:var(--shadow);
+    }
+
+    /* card yang kompak */
+    .card{
+      background:var(--card);
+      border-radius:12px;
+      padding:12px;
+      box-shadow:var(--shadow);
+      box-sizing:border-box;
+    }
+
+    /* header row: tambahkan tombol kembali di kiri, judul tetap terpusat */
+    .card-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      margin-bottom:10px;
+    }
+    .back-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius:8px;
+      cursor:pointer;
+      user-select:none;
+      font-size:14px;
+      color:#0b3a40;
+      background:transparent;
+      border:1px solid rgba(0,0,0,0.06);
+    }
+    .title{
+      flex:1;
+      text-align:center;
+      font-weight:700;
+      font-size:15px;
+      color:#0b3a40;
+      padding:6px 0;
+    }
+    /* spacer untuk kanan agar judul tetap center */
+    .spacer{ width:72px; height:36px; }
+
+    /* grid: lebih compact */
+    .detail-grid{
+      display:grid;
+      grid-template-columns: 180px 1fr;
+      gap:var(--gap);
+      align-items:start;
+    }
+
+    .side-text{
+      background:#fbfbfb;
+      padding:10px;
+      border-radius:10px;
+      border:1px solid rgba(0,0,0,0.04);
+    }
+    .side-text h2{ margin:0 0 6px 0; font-size:15px; color:#0b3a40; }
+    .side-text p{ margin:0; color:var(--muted); font-size:13px; line-height:1.55; text-align:justify; }
+
+    /* image column */
+    .images-col{
+      display:grid;
+      gap:var(--gap);
+    }
+
+    .main-photo{
+      width:100%;
+      height:220px;         /* lebih kecil */
+      object-fit:cover;
+      border-radius:10px;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(0,0,0,0.03);
+      display:block;
+    }
+
+    .thumb-row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:var(--gap);
+    }
+    .thumb-row img{
+      width:100%;
+      height:110px;
+      object-fit:cover;
+      border-radius:8px;
+      cursor:pointer;
+      transition:transform .18s ease, box-shadow .18s ease;
+      border:2px solid transparent;
+      box-shadow: 0 8px 18px rgba(10,18,24,0.04);
+    }
+    .thumb-row img:hover, .thumb-row img.active{
+      transform:scale(1.03);
+      border-color:var(--accent);
+    }
+
+    .gallery{
+      margin-top:10px;
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:10px;
+    }
+    .gallery img{
+      width:100%;
+      height:90px;
+      object-fit:cover;
+      border-radius:8px;
+      cursor:pointer;
+      border:2px solid transparent;
+      transition:transform .14s ease, border-color .14s ease;
+      box-shadow: 0 6px 14px rgba(10,18,24,0.04);
+    }
+    .gallery img:hover, .gallery img.active{ transform:scale(1.03); border-color:var(--accent); }
+
+    /* responsive: stack & semakin kecil */
+    @media (max-width:680px){
+      :root{ --max-width:560px; }
+      .detail-grid{ grid-template-columns:1fr; }
+      .main-photo{ height:180px; }
+      .thumb-row img{ height:100px; }
+      .gallery{ grid-template-columns: repeat(2, 1fr); gap:8px; }
+      .spacer{ display:none; } /* sembunyikan spacer di mobile */
+    }
+
+    @media (max-width:420px){
+      :root{ --max-width:360px; --text-size:13px; }
+      .main-photo{ height:150px; }
+      .thumb-row img{ height:84px; }
+      .gallery img{ height:72px; }
+      .card{ padding:10px; }
+    }
+
+    /* small accessibility focus styles */
+    .back-btn:focus, .thumb-row img:focus, .gallery img:focus{
+      outline:3px solid rgba(243,156,18,0.18);
+      outline-offset:2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar" aria-hidden="true">Contemporary Tropical</div>
+
+    <main class="card" role="main" aria-label="Desain detail ringkas">
+      <div class="card-head">
+        <!-- Tombol kembali ke halaman pertama (gunakan referrer jika ada, jika tidak ke index.html) -->
+         <a href="web.html" class="back-btn">← Kembali</a>
+
+        <div class="title">Contemporary Tropical</div>
+
+        <!-- spacer agar judul tetap terpusat -->
+        <div class="spacer" aria-hidden="true"></div>
+      </div>
+
+      <div class="detail-grid">
+        <aside class="side-text" aria-label="Deskripsi">
+          <h2>Contemporary Tropical</h2>
+          <p>
+            Contemporary Tropical adalah perpaduan sempurna antara arsitektur modern dan nuansa tropis yang hangat.
+            Gaya ini menghadirkan hunian yang terbuka,sejuk, dan menyatu dengan alam,
+            sambil tetap mempertahankan estetika kontemporer yang bersih dan fungsional.
+          </p>
+        </aside>
+
+        <section class="images-col" aria-label="Galeri gambar">
+          <img id="mainImg" class="main-photo"
+               src="img/I3.jpeg"
+               alt="Ruang utama minimalis hangat"
+               loading="lazy">
+
+          <div class="thumb-row" role="list" aria-label="Thumbnail">
+            <img src="img/cnt1.png"
+                 alt="Detail 1" loading="lazy" tabindex="0" role="listitem" onclick="swapWithMain(this)" onkeydown="if(event.key==='Enter')swapWithMain(this)">
+            <img src="img/cnt2.png"
+                 alt="Detail 2" loading="lazy" tabindex="0" role="listitem" onclick="swapWithMain(this)" onkeydown="if(event.key==='Enter')swapWithMain(this)">
+          </div>
+        </section>
+      </div>
+
+      <div class="gallery" aria-label="Galeri kecil">
+        <img src="img/cnt3.png"
+             alt="Toilet minimalis" loading="lazy" tabindex="0" onclick="swapWithMain(this)" onkeydown="if(event.key==='Enter')swapWithMain(this)">
+        <img src="img/cnt4.png"
+             alt="Ruang belajar" loading="lazy" tabindex="0" onclick="swapWithMain(this)" onkeydown="if(event.key==='Enter')swapWithMain(this)">
+        <img src="img/cnt5.png"
+             alt="Ruang makan terbuka" loading="lazy" tabindex="0" onclick="swapWithMain(this)" onkeydown="if(event.key==='Enter')swapWithMain(this)">
+        <img src="img/cnt6.png"
+             alt="Workspace" loading="lazy" tabindex="0" onclick="swapWithMain(this)" onkeydown="if(event.key==='Enter')swapWithMain(this)">
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Fungsi goHome: jika ada referrer, kembali ke halaman sebelumnya; jika tidak, arahkan ke index.html
+    function goHome(){
+      try {
+        if (document.referrer && new URL(document.referrer).origin === location.origin) {
+          history.back();
+        } else {
+          // preferensi: coba ke index.html, jika tidak ada, pakai root
+          location.href = 'index.html';
+        }
+      } catch (e) {
+        location.href = 'index.html';
+      }
+    }
+
+    // Swap clicked thumbnail with main image and mark active
+    function swapWithMain(img){
+      const main = document.getElementById('mainImg');
+      if(!img || !main) return;
+      if(img.src === main.src) return;
+
+      const tmp = main.src;
+      main.src = img.src;
+      img.src = tmp;
+
+      document.querySelectorAll('.thumb-row img, .gallery img').forEach(i => i.classList.remove('active'));
+      img.classList.add('active');
+    }
+
+    // initial active thumbnail
+    document.addEventListener('DOMContentLoaded', () => {
+      const first = document.querySelector('.thumb-row img') || document.querySelector('.gallery img');
+      if(first) first.classList.add('active');
+    });
+  </script>
+</body>
+</html>
